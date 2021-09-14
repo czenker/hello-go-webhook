@@ -1,0 +1,8 @@
+# pod_annotator should not override the "foo" label
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-annotator-02
+  labels:
+    app: pod-annotator
+    foo: dont-touch-me

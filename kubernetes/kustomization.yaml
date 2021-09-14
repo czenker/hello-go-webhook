@@ -1,0 +1,9 @@
+resources:
+- certificate.yaml
+- deployment.yaml
+- issuer.yaml
+- service.yaml
+- webhook.yaml
+
+commonLabels:
+  app: go-webhook

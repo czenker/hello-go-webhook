@@ -1,0 +1,23 @@
+# @see https://kuttl.dev/docs/testing/reference.html#testsuite
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+startKind: false
+startControlPlane: true
+# @see https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/
+# controlPlaneArgs:
+  # - "foobar"
+## attachControlPlaneOutput: if true, attaches control plane logs (api-server, etcd) into stdout. This is useful for debugging.
+attachControlPlaneOutput: false
+manifestDirs:
+- test/manifests
+testDirs:
+- test/integration
+timeout: 10
+commands:
+  - command: go run . -cert-dir=./test/certificate/insecure
+    background: true
+  # wait for service to run
+  - command: bash -c "while ! curl --silent http://localhost:8081/healthz; do echo 'Waiting for go-webhook health check to respond...' && sleep 1; done"
+  - command: "echo 'go-webhook seems to be up'"
+  - command: sleep 2 # webservice is considered to be up too early
+reportFormat: json

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-annotator-01
+  labels:
+    foo: webhook-was-here
+

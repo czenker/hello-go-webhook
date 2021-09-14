@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: go-webhook
+spec:
+  secretName: go-webhook-tls
+  commonName: go-webhook.default.svc
+  dnsNames:
+  - "go-webhook.default.svc.cluster.local"
+  - "go-webhook.default.svc"
+  - "go-webhook.default"
+  - "go-webhook"
+  issuerRef:
+    name: selfsigned
+    kind: Issuer

@@ -1,0 +1,5 @@
+# pod_annotator should add the "foo" label if it does not exist even if no label is set at all
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-annotator-01

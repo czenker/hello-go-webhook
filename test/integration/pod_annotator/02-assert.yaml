@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pod-annotator-02
+  labels:
+    app: pod-annotator
+    foo: dont-touch-me

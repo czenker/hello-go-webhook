@@ -1,0 +1,32 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: go-webhook
+  annotations:
+    cert-manager.io/inject-ca-from: default/go-webhook
+webhooks:
+- clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURXRENDQWtDZ0F3SUJBZ0lSQUo3dit5bHNBcXM5aTBROGRROWh3cXN3RFFZSktvWklodmNOQVFFTEJRQXcKSVRFZk1CMEdBMVVFQXhNV1oyOHRkMlZpYUc5dmF5NWtaV1poZFd4MExuTjJZekFlRncweU1UQTVNVEl3TnpBMQpNekZhRncweU1URXlNVEV3TnpBMU16RmFNQ0V4SHpBZEJnTlZCQU1URm1kdkxYZGxZbWh2YjJzdVpHVm1ZWFZzCmRDNXpkbU13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRREJTek1ieVlFMHBQLzYKUlU3M29ITkI5MkRSVlUyQ2JqbFcyK090bTV3aGJYM08yVmhMZExYRDhha3hWSERpSEFNRUZIYnlZV2RkVjZGNgp4Mjg5c2MzMUpGMHA0N2g4cXVrd0xQVENFeHRSVDhFS2xPbklwdnEya2hnNENDdGg1akhNYVFzbnVMTXByOVVCCndJQ0lxVkRUdUZ1dnFPcm1sOFNLbVNqM0NEMCt1emttcnF4Sy93S0h5TFNYWmlZWkF4dkxZQnhSQmNIb3NHTXUKYkxZeTdyUzJqeFlhVzhHNEpPS3VjazVrT3dqM0dvMW9Ub3dyNDAwNTRDdWdOckVxK1JlMnVzSUNENFgyMkdBNwo3M1JwdGdrYlB3YXQ4QTZJS1kwdHdWSXAxeTczYk1JU2RScWduTUtWZmszamFZUStmNGk4VnhXQnNYMHZtSmlICkJIc29aK0hqQWdNQkFBR2pnWW93Z1ljd0RnWURWUjBQQVFIL0JBUURBZ1dnTUF3R0ExVWRFd0VCL3dRQ01BQXcKWndZRFZSMFJCR0F3WG9Ja1oyOHRkMlZpYUc5dmF5NWtaV1poZFd4MExuTjJZeTVqYkhWemRHVnlMbXh2WTJGcwpnaFpuYnkxM1pXSm9iMjlyTG1SbFptRjFiSFF1YzNaamdoSm5ieTEzWldKb2IyOXJMbVJsWm1GMWJIU0NDbWR2CkxYZGxZbWh2YjJzd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLMXdveE1abHFtMWlYb0FCdm14R2YwNFVJYTMKSHo3ZEYrUDNwOWoxOXBZVkVNVEpYUXZ1QzdPVWtLK25rWkdxMi9Jcm1aOUFGMk9DN2ZBM2lSTEp6eWExZXlGdgo5c3A5RUtaclpLY3d3aFZWWHExMmp3eklRS3g0UE96TU9IU1BnbEVKaWR4RlJFaTlKWmxtNnJxeWhwbGprTzJkClVSdXp5eXFrZ0s1c1J6aGVvRm5EQ3hGV3VHaHhrSENMM3hyU0VCWVlFYWswT1BhYm40VTFkUDAybkNpTmRiOTMKVER1TVhMWVJxWG5wVU42SXlhMkxkN3hQUWl2U0lreUFKWDVxNUVCMXBXcXY0T1liQzYzNmN6dmtidnlIbjFRaQo3Vkk3M21yMk1sVFlOa3NlTVREcGZjUG1TckFXNHRnU0hYTXhUVzFteWhHaU1WZHYvbUJDWGtyRit1QT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    service:
+      name: go-webhook
+      path: /mutate
+      port: 443
+      namespace: default
+  sideEffects: None
+  admissionReviewVersions: ["v1"]
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: NotIn
+      values: ["kube-system"]
+  failurePolicy: Ignore
+  timeoutSeconds: 3
+  name: go-webhook.default.svc.cluster.local
+  rules:
+  - apiGroups: ["*"]
+    apiVersions: ["*"]
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - configmaps

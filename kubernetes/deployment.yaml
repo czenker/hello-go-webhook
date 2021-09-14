@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: go-webhook
+  name: go-webhook
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: go-webhook
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: go-webhook
+    spec:
+      volumes:
+      - name: go-webhook-tls
+        secret:
+          secretName: go-webhook-tls
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+      containers:
+      - image: example.com/go-webhook:latest
+        imagePullPolicy: Never
+        name: go-webhook
+        command:
+          - "./main"
+#          - "-https-port"
+#          - "8443"
+#          - "-https-crt"
+#          - "/etc/tls/tls.crt"
+#          - "-https-key"
+#          - "/etc/tls/tls.key"
+#          - "-log-level"
+#          - "debug"
+        ports:
+        - containerPort: 8443
+          name: https
+        - containerPort: 8080
+          name: http-metrics
+        resources: {}
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: go-webhook-tls
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

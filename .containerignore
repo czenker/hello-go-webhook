@@ -1,0 +1,8 @@
+Containerfile
+
+.*
+*_test.go
+
+vendor/
+kubernetes/
+Readme.md
